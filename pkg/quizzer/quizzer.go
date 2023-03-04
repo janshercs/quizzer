@@ -3,10 +3,12 @@ package quizzer
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/janshercs/quizzer/pkg/sheets"
 )
 
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, Jans!")
+	fmt.Fprint(w, sheets.GetSheetData())
 }
 
 func StartServer() {
