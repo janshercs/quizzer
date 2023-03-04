@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz App</title>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.css'></head>
+<body>
+    <h1>Enter Google Sheets URL</h1>
+    <p>{{.}}</p>
+    <form action="/" method="post">
+        <label for="sheetUrl">Google Sheets URL:</label>
+        <input type="text" id="sheetUrl" name="sheetUrl" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

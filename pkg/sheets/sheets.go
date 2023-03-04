@@ -3,6 +3,8 @@ package sheets
 import (
 	"context"
 	"fmt"
+	"log"
+	"net/url"
 	"os"
 	"strings"
 
@@ -10,21 +12,27 @@ import (
 	"google.golang.org/api/sheets/v4"
 )
 
-const CREDENTIALS_FILE_PATH = "CREDENTIALS_FILE_PATH"
+const credentialsFilePath = "CREDENTIALS_FILE_PATH"
+const noDataFound = "No data found, invalid URL"
 
-func GetSheetData() string {
+func GetSheetData(sheetURL string) []string {
 	// Set up the Google Sheets API client
 
 	ctx := context.Background()
-	client, err := sheets.NewService(ctx, option.WithCredentialsFile(os.Getenv(CREDENTIALS_FILE_PATH)))
+	client, err := sheets.NewService(ctx, option.WithCredentialsFile(os.Getenv(credentialsFilePath)))
 	if err != nil {
 		// Handle error
 		panic(err)
 	}
 
 	// Specify the spreadsheet ID and range of cells to read
-	spreadsheetId := "1DUulwcqZJLdUTXk4Z5l7l4lVsPYBitCGph4gP7T65pg"
+	spreadsheetId, err := getSheetID(sheetURL)
+	if err != nil {
+		return []string{noDataFound}
+	}
+
 	readRange := "Sheet1!A1:D10"
+	log.Printf("getting sheet for sheet ID: %s", spreadsheetId)
 
 	// Call the API to fetch the data
 	resp, err := client.Spreadsheets.Values.Get(spreadsheetId, readRange).Do()
@@ -33,17 +41,31 @@ func GetSheetData() string {
 		panic(err)
 	}
 
-	var builder strings.Builder
-
+	results := make([]string, 0, len(resp.Values))
 	// Parse the response data as needed
 	if len(resp.Values) > 0 {
-		builder.WriteString("Data found:")
+		results = append(results, "Data found")
 		for _, row := range resp.Values {
-			builder.WriteString(fmt.Sprintf("%s\n", row))
+			results = append(results, fmt.Sprintf("%s", row))
 		}
 	} else {
-		builder.WriteString("No data found.")
+		results = append(results, "No data found.")
+
+	}
+	log.Println(results)
+
+	return results
+}
+
+func getSheetID(urlStr string) (string, error) {
+	parsedURL, err := url.Parse(urlStr)
+	if err != nil {
+		return "", err
 	}
 
-	return builder.String()
+	path := parsedURL.Path
+	parts := strings.Split(path, "/")
+	id := parts[len(parts)-2]
+
+	return id, nil
 }
