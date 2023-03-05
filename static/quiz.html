@@ -1,15 +1,122 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quiz Page</title>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.css'>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin: 0;
+            font-weight: 600;
+            color: #333333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .question h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .option {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .option input[type="radio"] {
+            display: none;
+        }
+
+        .option label {
+            display: block;
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+        .option label:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid #999999;
+            border-radius: 50%;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        .option input[type="radio"]:checked + label:before {
+            border-color: #2196F3;
+        }
+
+        .comment {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #999999;
+        }
+
+        .btn {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #2196F3;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h1>Quiz Questions</h1>
-    <ul>
-        {{range .}}
-        <li>{{.}}</li>
+    <div class="container">
+        <h1>Quiz</h1>
+        {{ range .Questions }}
+        <div class="question">
+            <h2>{{.Query}}</h2>
+            <ul class="options">
+                {{range .Options}}
+                <li class="option">
+                    <input type="radio" id="{{.ID}}" value="{{.Value}}">
+                    <label for="{{.ID}}">{{.Value}}</label>
+                </li>
+                {{end}}
+            </ul>
+            {{if ne .Comment ""}}
+            <p class="comment">{{.Comment}}</p>
+            {{end}}
+        </div>
         {{end}}
-    </ul>
+        <button class="btn">Submit</button>
+    </div>
 </body>
 </html>

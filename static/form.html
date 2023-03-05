@@ -1,16 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz App</title>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.css'></head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
 <body>
-    <h1>Enter Google Sheets URL</h1>
-    <p>{{.}}</p>
-    <form action="/" method="post">
-        <label for="sheetUrl">Google Sheets URL:</label>
-        <input type="text" id="sheetUrl" name="sheetUrl" required>
-        <br>
-        <button type="submit">Submit</button>
-    </form>
+    <header>
+        <h1>Quiz App</h1>
+    </header>
+
+    <div class="container">
+        <h1>Enter Google Sheets URL</h1>
+        <form action="/" method="post">
+            <label for="sheetUrl">Google Sheets URL:</label>
+            <input type="text" id="sheetUrl" name="sheetUrl" required>
+            <br>
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Quiz App</p>
+    </footer>
 </body>
 </html>
